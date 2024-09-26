@@ -9,7 +9,7 @@ const val ALGORITHM: String = "ChaCha20"
 val key: SecretKey = KeyGenerator.getInstance(ALGORITHM).apply { init(256) }.generateKey()
 val nonce = ByteArray(12).apply { SecureRandom().nextBytes(this) }
 
-fun encryptRaw(data: ByteArray, n: Int = 0): ByteArray {
+fun encryptRaw(data: ByteArray, n: Int): ByteArray {
     val parameterSpec = ChaCha20ParameterSpec(nonce, n);
     val cipher = Cipher.getInstance(ALGORITHM)
     cipher.init(Cipher.ENCRYPT_MODE, key, parameterSpec)
@@ -17,7 +17,7 @@ fun encryptRaw(data: ByteArray, n: Int = 0): ByteArray {
     return cipher.doFinal(data)
 }
 
-fun decryptRaw(data: ByteArray, n: Int = 0): ByteArray {
+fun decryptRaw(data: ByteArray, n: Int): ByteArray {
     val parameterSpec = ChaCha20ParameterSpec(nonce, n);
     val cipher = Cipher.getInstance(ALGORITHM)
     cipher.init(Cipher.DECRYPT_MODE, key, parameterSpec)
@@ -25,13 +25,13 @@ fun decryptRaw(data: ByteArray, n: Int = 0): ByteArray {
     return cipher.doFinal(data)
 }
 
-fun encryptAllRaw(data: List<ByteArray>, n: Int = 500): List<ByteArray> {
+fun encryptAllRaw(data: List<ByteArray>, n: Int): List<ByteArray> {
     return data.map {arr -> (1..n)
         .foldIndexed(arr) {index, acc, _ -> encryptRaw(acc, index)}
     }
 }
 
-fun decryptAllRaw(data: List<ByteArray>, n: Int = 500): List<ByteArray> {
+fun decryptAllRaw(data: List<ByteArray>, n: Int): List<ByteArray> {
     return data.map {arr -> (1..n)
         .foldIndexed(arr) {index, acc, _ -> decryptRaw(acc, index)}
     }

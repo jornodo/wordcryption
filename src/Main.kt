@@ -15,6 +15,6 @@ fun main() {
 
     // write encryptedText to file
     File("encryptedText.txt").writeText(encryptedText.toString())
-    println("List of individually encrypted words written to encryptedText.txt" +
+    println("List of individually encrypted words written to encryptedText.txt, " +
         "Size of list = ${encryptedText.size}")
 }
